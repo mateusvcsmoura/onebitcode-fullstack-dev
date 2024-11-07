@@ -1,0 +1,29 @@
+h1 {
+    text-align: center;
+}
+
+ul>li {
+    list-style: none;
+    display: inline-block;
+
+    height: 200px;
+    width: 350px;
+
+    margin: 10px;
+    padding: 10px;
+
+    background-color: #202020;
+    color: #FFF;
+
+    border-radius: .4rem;
+    border: 4px solid;
+}
+
+.selected {
+    border-color: #2020b9;
+    background-color: #404040;
+}
+
+.hidden {
+    display: none;
+}

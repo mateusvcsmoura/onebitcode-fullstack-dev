@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Formulário de Inscrição</h1>
+    <form>
+
+        <!-- Section -->
+        <label for="username">Nome: </label>
+        <input type="text" name="username" id="username" required />
+        <br><br>
+
+        <!-- Section -->
+        <label for="email">E-mail: </label>
+        <input type="email" name="email" id="email" required />
+        <br><br>
+
+        <!-- Section -->
+        <label for="phone">Telefone: </label>
+        <input type="tel" name="phone" id="phone" />
+        <br><br>
+
+        <!-- Section -->
+        <label for="working-area">Área de Atuação:</label>
+        <br><br>
+        <input type="radio" name="working-area" id="development" value="development" required>
+        <label for="development">Desenvolvimento</label>
+
+        <input type="radio" name="working-area" id="quality-assurance" value="quality-assurance" required>
+        <label for="quality-assurance">Quality Assurance (QA)</label>
+
+        <input type="radio" name="working-area" id="data-analysis" value="data-analysis" required>
+        <label for="data-analysis">Análise de Dados</label>
+
+        <input type="radio" name="working-area" id="infraestructure" value="infraestructure" required>
+        <label for="infraestructure">Infraestrutura</label>
+        <br><br>
+
+        <!-- Section -->
+        <label for="observations">Observações: </label>
+        <br>
+        <textarea name="observations" id="observations" placeholder="Obs.:" rows="3" cols="40"></textarea>
+        <br><br>
+
+        <!-- Section -->
+        <input type="checkbox" name="subscribing" id="subscribing" value="true">
+        <label for="subscribing">Desejo receber novidades e ofertas por e-mail.</label>
+        <br><br>
+
+        <button type="submit">Enviar</button>
+    </form>
+</body>
+
+</html>
