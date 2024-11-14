@@ -9,86 +9,75 @@ function showMenu() {
     return opt;
 }
 
-function triangleArea(base, height) {
-    return (base * height) / 2;
+function triangleArea() {
+    const base = parseFloat(window.prompt("Base do Triângulo"));
+    const height = parseFloat(window.prompt("Altura do Triângulo"));
+    const result = (base * height) / 2;
+
+    return window.alert(`Resultado | Área\n\n${result}`);;
 }
 
-function rectangleArea(base, height) {
-    return base * height;
+function rectangleArea() {
+    const base = parseFloat(window.prompt("Base do Retângulo"));
+    const height = parseFloat(window.prompt("Altura do Retângulo"));
+    const result = base * height;
+
+    return window.alert(`Resultado | Área\n\n${result}`);
 }
 
-function squareArea(side) {
-    return side * side;
+function squareArea() {
+    const side = parseFloat(window.prompt("Lado do Quadrado"));
+    const result = side * side;
+
+    return window.alert(`Resultado | Área\n\n${result}`);
 }
 
-function trapezeArea(higherBase, base, height) {
-    return (higherBase + base) * height / 2;
+function trapezeArea() {
+    const higherBase = parseFloat(window.prompt("Base Maior"));
+    const base = parseFloat(window.prompt("Base Menor"));
+    const height = parseFloat(window.prompt("Altura"));
+    const result = (higherBase + base) * height / 2;
+
+    return window.alert(`Resultado | Área\n\n${result}`);
 }
 
-function circleArea(pi, radius) {
-    return pi * radius ** 2;
+function circleArea() {
+    let pi = 3.14;
+
+    const radius = parseFloat(window.prompt("Raio do Círculo"));
+    const result = pi * radius ** 2;
+
+
+    return window.alert(`Resultado | Área\n\n${result}`);
 }
 
 // Loop
 
 do {
     let opt = showMenu();
-    let base;
-    let height;
-    let side;
-    let result;
-    let higherBase;
-    let radius;
-    let pi = 3.14;
 
     switch (parseFloat(opt)) {
         case 1:
-            base = parseFloat(window.prompt("Base do Triângulo"));
-            height = parseFloat(window.prompt("Altura do Triângulo"));
-            result = triangleArea(base, height);
-
-            window.alert(`Resultado | Área\n\n${result}`);
-
+            triangleArea();
             break;
         case 2:
-            base = parseFloat(window.prompt("Base do Retângulo"));
-            height = parseFloat(window.prompt("Altura do Retângulo"));
-            result = rectangleArea(base, height);
-
-            window.alert(`Resultado | Área\n\n${result}`);
-
+            rectangleArea();
             break;
         case 3:
-            side = parseFloat(window.prompt("Lado do Quadrado"));
-            result = squareArea(side);
-
-            window.alert(`Resultado | Área\n\n${result}`);
-
+            squareArea();
             break;
         case 4:
-            higherBase = parseFloat(window.prompt("Base Maior"));
-            base = parseFloat(window.prompt("Base Menor"));
-            height = parseFloat(window.prompt("Altura"));
-            result = trapezeArea(higherBase, base, height);
-
-            window.alert(`Resultado | Área\n\n${result}`);
-
+            trapezeArea();
             break;
         case 5:
-            radius = parseFloat(window.prompt("Raio do Círculo"));
-            result = circleArea(pi, radius);
-
-            window.alert(`Resultado | Área\n\n${result}`);
-
+            circleArea();
             break;
         case 6:
             window.alert("Saindo..");
             flag = false;
-
             break;
         default:
             window.alert("Opção inválida.");
-
             break;
     }
 } while (flag)
