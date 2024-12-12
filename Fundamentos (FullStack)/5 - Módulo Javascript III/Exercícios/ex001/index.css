@@ -1,0 +1,22 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    padding: 1rem;
+}
+
+h1 {
+    margin: 1rem 0;
+}
+
+ul>li {
+    list-style: none;
+    margin: 1rem 0;
+}
+
+section#players-input>button {
+    margin-top: 1rem;
+}

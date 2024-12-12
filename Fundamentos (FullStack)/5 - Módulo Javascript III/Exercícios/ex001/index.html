@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/index.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Escalar Jogadores</h1>
+    <section id="players-input">
+        <ul>
+            <li>
+                <label for="position">Posição: </label>
+                <input type="text" name="position" id="position" placeholder="Posição..." />
+            </li>
+            <li>
+                <label for="name">Nome do Jogador: </label>
+                <input type="text" name="name" id="name" placeholder="Nome..." />
+            </li>
+            <li>
+                <label for="number">Número: </label>
+                <input type="number" name="number" id="number" placeholder="Número..." />
+            </li>
+        </ul>
+        <button onclick="addPlayer()">Escalar</button>
+    </section>
+
+    <h1>Remover Jogador</h1>
+    <section id="remove-players">
+        <label for="removeNumber">Número do Jogador: </label>
+        <input type="number" name="removeNumber" id="removeNumber" placeholder="Número..." />
+        <button onclick="removePlayer()">Remover</button>
+    </section>
+
+    <h1>Escalação</h1>
+    <section id="players-list"></section>
+
+    <script src="/index.js"></script>
+</body>
+
+</html>
