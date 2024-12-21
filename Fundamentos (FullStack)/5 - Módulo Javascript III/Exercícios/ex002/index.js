@@ -115,7 +115,19 @@ function saveTech(ev) {
 
         for (let i = 0; i < devs.length; i++) {
             if (devs[i].username === username) {
-                devs[i].techs.push({ techName, experience });
+                let techFound = false;
+
+                for (let j = 0; j < devs[i].techs.length; j++) {
+                    if (devs[i].techs[j].techName === techName) {
+                        devs[i].techs[j].experience = experience;
+
+                        techFound = true;
+                    }
+                }
+
+                if (!techFound) {
+                    devs[i].techs.push({ techName, experience });
+                }
 
                 userFound = true;
             }
