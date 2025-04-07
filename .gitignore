@@ -1,5 +1,5 @@
 # Ignora os módulos instalados via npm
-node_modules/
+**/node_modules/
 
 # Arquivos de log
 npm-debug.log*
