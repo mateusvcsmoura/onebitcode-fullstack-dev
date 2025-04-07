@@ -1,0 +1,37 @@
+# Ignora os módulos instalados via npm
+node_modules/
+
+# Arquivos de log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos de ambiente (não subir nunca)
+.env
+.env.local
+.env.*.local
+
+# Diretórios de build/output
+dist/
+build/
+coverage/
+
+# Cache
+.cache/
+.next/
+out/
+tmp/
+temp/
+
+# Pastas de editores de código
+.vscode/
+.idea/
+
+# Arquivos do sistema operacional
+*.swp
+*.swo
