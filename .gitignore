@@ -16,11 +16,6 @@ Thumbs.db
 .env.local
 .env.*.local
 
-# Diretórios de build/output
-dist/
-build/
-coverage/
-
 # Cache
 .cache/
 .next/
