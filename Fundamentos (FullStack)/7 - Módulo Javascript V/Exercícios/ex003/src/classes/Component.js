@@ -17,8 +17,8 @@ class Component {
         this.#elementReference = reference;
     }
 
-    render(parent = document.body) {
-        parent.appendChild(this.#elementReference);
+    render(parent = document.body, child = this.#elementReference) {
+        parent.appendChild(child);
     }
 
     getElementReference() {
