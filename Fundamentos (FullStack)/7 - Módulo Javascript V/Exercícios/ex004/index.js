@@ -18,7 +18,4 @@ console.log(gabi.attack(mats));
 console.log(gabi.togglePosition());
 console.log(sofi.attack(gabi));
 
-console.log(mats);
-console.log(sofi);
-console.log(giga);
-console.log(gabi);
+console.table({ mats, sofi, giga, gabi });
