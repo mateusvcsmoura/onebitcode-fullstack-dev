@@ -7,8 +7,12 @@ class Loan extends Deposit {
     constructor(amount, plots) {
         super(amount);
         this.plots = plots;
-        this.installments = this.createInstallments();
         this.createdAt = new Date();
+
+        const total = (amount + (amount * Loan.#fee));
+
+        this.total = total;
+        this.installments = this.createInstallments();
     }
 
     static get fee() {
@@ -22,10 +26,10 @@ class Loan extends Deposit {
     createInstallments() {
         const installmentsArray = [];
 
-        const plotsFinalValue = (this.amount + (this.amount * Loan.#fee)) / this.plots;
+        const plotValue = this.total / this.plots;
 
         for (let i = 0; i < this.plots; i++) {
-            const plot = new Installment(plotsFinalValue, i + 1);
+            const plot = new Installment(plotValue, i + 1);
 
             installmentsArray.push(plot);
         }
