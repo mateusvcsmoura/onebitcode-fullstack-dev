@@ -7,6 +7,7 @@ class Loan extends Deposit {
     constructor(amount, plots) {
         super(amount);
         this.plots = plots;
+        this.plotsRemaining = plots;
         this.createdAt = new Date();
 
         const total = (amount + (amount * Loan.#fee));
@@ -20,7 +21,11 @@ class Loan extends Deposit {
     }
 
     static set fee(newFee) {
-        return Loan.#fee = (newFee / 100);
+        if (typeof newFee !== 'number' || newFee < 0) {
+            throw new Error("invalid fee");
+        }
+
+        this.#fee = newFee / 100;
     }
 
     createInstallments() {

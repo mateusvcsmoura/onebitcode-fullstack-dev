@@ -3,10 +3,11 @@ const Deposit = require('./Deposit');
 const Loan = require('./Loan');
 
 class Account {
-    #balance = 10;
+    #balance = 0;
     #deposits = [];
     #transfers = [];
     #loans = [];
+    #oldLoans = [];
 
     constructor(user) {
         this.user = user;
@@ -30,15 +31,19 @@ class Account {
         return this.#loans;
     }
 
+    get oldLoans() {
+        return this.#oldLoans;
+    }
+
     transfer(amount, receiver) {
         const currentBalance = this.#balance;
 
-        if (amount > currentBalance) {
-            return "not enough money on balance to transfer";
+        if (amount < 1 || typeof (amount) !== "number") {
+            return "invalid transfer";
         }
 
-        if (!(receiver instanceof Account)) {
-            return "you can only transfer money to registered accounts";
+        if (amount > currentBalance) {
+            return "not enough money on balance to transfer";
         }
 
         this.#balance -= amount;
@@ -47,16 +52,14 @@ class Account {
 
         this.#transfers.push(newTransfer);
 
-        receiver.receiveTransfer(amount);
-
         return newTransfer;
     }
 
-    receiveTransfer(amount) {
-        return this.#balance += amount;
-    }
-
     deposit(amount) {
+        if (amount < 1 || typeof (amount) !== "number") {
+            return "invalid deposit";
+        }
+
         this.#balance += amount;
 
         const newDeposit = new Deposit(amount);
@@ -67,7 +70,7 @@ class Account {
     }
 
     loan(amount, plots) {
-        if (amount < 1 || plots < 1) {
+        if (amount < 1 || plots < 1 || typeof (amount) !== "number") {
             return "invalid loan";
         }
 
@@ -89,7 +92,15 @@ class Account {
 
         const amountToPay = plots * plotValue;
 
-        if (plots >= currentLoan.plots && this.#balance >= amountToPay) {
+        if (plots >= currentLoan.plotsRemaining && this.#balance >= amountToPay) {
+            for (let i = 0; i < currentLoan.installments.length; i++) {
+                currentLoan.installments[i].status = "paid";
+            }
+
+            this.#oldLoans.push(currentLoan);
+
+            currentLoan.plotsRemaining = 0;
+
             this.loans.pop();
 
             this.#balance -= currentLoan.total;
@@ -98,7 +109,11 @@ class Account {
         } else if (this.#balance < amountToPay) {
             return "you don't have enough money to pay the plot(s). check your balance.";
         } else {
-            currentLoan.installments.splice(0, plots);
+            currentLoan.plotsRemaining -= plots;
+
+            for (let i = 0; i < plots; i++) {
+                currentLoan.installments[i].status = "paid";
+            }
 
             this.#balance -= amountToPay;
 
