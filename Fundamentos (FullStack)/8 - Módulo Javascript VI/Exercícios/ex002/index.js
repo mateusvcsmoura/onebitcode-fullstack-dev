@@ -6,19 +6,22 @@ const imcRanges = [
     { min: 40, max: Infinity, label: "severe obesity" }
 ];
 
-function calculateImc(weight, height) {
-    return new Promise((resolve, reject) => {
-        if (typeof (weight) !== "number" || typeof (height) !== "number") {
-            reject("both arguments should be numbers");
-        } else {
-            const imc = weight / (height ** 2);
-            resolve(parseFloat(parseFloat(imc).toFixed(2)));
-        }
-    });
+async function calculateImc(weight, height) {
+    if (typeof (weight) !== "number" || typeof (height) !== "number") {
+        return Promise.reject("both arguments should be numbers");
+    } else {
+        const imc = weight / (height ** 2);
+
+        return (parseFloat(parseFloat(imc).toFixed(2)));
+    }
 }
 
-function showImcSituation(weight, height) {
-    calculateImc(weight, height).then((result) => {
+async function showImcSituation(weight, height) {
+    try {
+        console.log(`calculating imc for ${weight}kg and ${height}m`);
+
+        const result = await calculateImc(weight, height);
+
         console.log(`\nyour imc: ${result}`);
 
         const situation = imcRanges.find(range => result >= range.min && result < range.max);
@@ -29,15 +32,13 @@ function showImcSituation(weight, height) {
             console.log("invalid imc");
         }
 
-    }).catch((e) => {
+    } catch (e) {
         console.log(e);
-    });
-
-    console.log("started calculating imc");
+    }
 }
 
 showImcSituation(80, 1.65);
 showImcSituation(70, 1.63);
 showImcSituation(56, 1.63);
-showImcSituation("56", 1.63);
+showImcSituation(null, 1.80);
 showImcSituation(60, 1.73);
