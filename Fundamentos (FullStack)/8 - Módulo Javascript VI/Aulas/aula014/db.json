@@ -1,0 +1,64 @@
+{
+  "articles": [
+    {
+      "id": "1",
+      "title": "Olá, mundo!",
+      "content": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam minus inventore voluptatem, eum repellat sed officiis aliquam",
+      "author": "Isaac"
+    },
+    {
+      "id": "2",
+      "title": "Requisições POST com Javascript",
+      "content": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam minus inventore voluptatem, eum repellat sed officiis aliquam",
+      "author": "Isaac"
+    },
+    {
+      "id": "f4e4",
+      "title": "blabla",
+      "author": "mats",
+      "content": "asssss"
+    },
+    {
+      "id": "30b1",
+      "title": "juices the best",
+      "author": "mats",
+      "content": "true!!!!"
+    },
+    {
+      "id": "8031",
+      "title": "Teste ",
+      "author": "mats",
+      "content": "Reqsssss"
+    },
+    {
+      "id": "f1f7",
+      "title": "chatgpt",
+      "author": "mats",
+      "content": "tudo bom?"
+    },
+    {
+      "id": "7339",
+      "title": "caneta",
+      "author": "mats",
+      "content": "caneta bic vermelha"
+    },
+    {
+      "id": "5724",
+      "title": "isaac",
+      "author": "mats",
+      "content": "!!!!!"
+    },
+    {
+      "id": "81d6",
+      "title": "caderno",
+      "author": "mats",
+      "content": "caderno do governo"
+    },
+    {
+      "id": "296c",
+      "title": "isaac js",
+      "author": "joao",
+      "content": "isaac ensinando fetch"
+    }
+  ]
+}
