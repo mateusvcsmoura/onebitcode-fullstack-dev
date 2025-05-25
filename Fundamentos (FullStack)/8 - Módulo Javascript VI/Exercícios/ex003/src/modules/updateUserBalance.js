@@ -2,7 +2,6 @@ import { loadUserBalance } from "./loadUserBalance.js";
 
 export async function updateUserBalance(amount) {
     try {
-        console.log(`amount recebida: ${amount}`);
         const user = await loadUserBalance();
         const newBalance = Number(user.balance) + Number(amount);
 

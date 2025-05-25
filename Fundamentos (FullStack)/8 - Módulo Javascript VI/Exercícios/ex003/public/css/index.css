@@ -131,3 +131,13 @@ h1 {
     background-color: white;
     color: #333;
 }
+
+.transaction input,
+.transaction select {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 150px;
+}

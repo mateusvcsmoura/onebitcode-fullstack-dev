@@ -24,8 +24,8 @@ export async function createTransaction(name, value, type) {
 
     const savedTransaction = await response.json();
 
-    console.log(savedTransaction);
-
     fetchTransactions();
+
+    return savedTransaction;
 }
 
