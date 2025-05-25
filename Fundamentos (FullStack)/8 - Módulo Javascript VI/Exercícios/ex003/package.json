@@ -1,0 +1,16 @@
+{
+  "name": "ex003",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "json-server": "json-server --watch transactions.json"
+  },
+  "keywords": [],
+  "author": "mateusvcsmoura",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "json-server": "^1.0.0-beta.3"
+  }
+}

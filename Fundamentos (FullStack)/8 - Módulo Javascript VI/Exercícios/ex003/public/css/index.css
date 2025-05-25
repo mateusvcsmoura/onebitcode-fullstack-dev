@@ -1,0 +1,133 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f4f4f4;
+    padding: 2rem;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+#balance {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+#transaction-form {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+#transaction-form input {
+    flex: 1;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#transaction-form button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#transaction-form button:hover {
+    background: #218838;
+}
+
+#transaction-list {
+    list-style: none;
+}
+
+.transaction {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.transaction-name {
+    flex: 1;
+}
+
+.transaction-value {
+    width: 100px;
+    text-align: right;
+    font-weight: bold;
+    color: #333;
+}
+
+.transaction-value::before {
+    content: '';
+    margin-right: 4px;
+}
+
+.transaction-value:contains("-") {
+    color: #dc3545;
+}
+
+.transaction-value:contains("+") {
+    color: #28a745;
+}
+
+.actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-left: 1rem;
+}
+
+.actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 0.2rem 0.5rem;
+}
+
+.actions button.edit {
+    color: #007bff;
+}
+
+.actions button.delete {
+    color: #dc3545;
+}
+
+#transaction-form select {
+    flex: 1;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+    color: #333;
+}

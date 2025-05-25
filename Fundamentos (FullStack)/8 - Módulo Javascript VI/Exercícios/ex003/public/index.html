@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>App Finanças Pessoais</title>
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Minhas Finanças</h1>
+        <div id="balance">Saldo Total: R$ 0,00</div>
+
+        <form id="transaction-form">
+            <input type="text" id="name" placeholder="Nome da transação" required />
+            <input type="number" id="value" placeholder="Valor" required />
+            <select id="type" required>
+                <option value="income">Entrada</option>
+                <option value="expense">Saída</option>
+            </select>
+            <button type="submit">Adicionar</button>
+        </form>
+
+
+        <ul id="transaction-list"></ul>
+    </div>
+    <script type="module" src="../src/index.js"></script>
+</body>
+
+</html>
