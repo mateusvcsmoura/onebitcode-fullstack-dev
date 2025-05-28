@@ -1,0 +1,11 @@
+"use strict";
+let crew = ["", "", ""];
+crew[0] = "mats";
+crew[1] = "isaac";
+crew[2] = "juic";
+console.log(crew);
+let point = [0, 0];
+point = [2, 5];
+let [x, y] = point;
+console.log(x);
+console.log(y);
