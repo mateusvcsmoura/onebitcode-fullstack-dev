@@ -17,6 +17,12 @@ const idControl = () => {
     return id;
 }
 
+const findSpaceship = (spaceshipId: number) => {
+    const currentSpaceship = spaceships.find(s => s.id === spaceshipId);
+
+    return currentSpaceship;
+}
+
 const saveSpaceship = (name: string, pilot: string, crewLimit: number) => {
     const spaceship = {
         name,
@@ -31,10 +37,20 @@ const saveSpaceship = (name: string, pilot: string, crewLimit: number) => {
 }
 
 const addCrew = (targetCrew: number, spaceship: { name: string, crewLimit: number, crew: number, id: number }) => {
-    while (targetCrew > spaceship.crewLimit) {
-        window.alert(`Target Crew: ${targetCrew} is surpassing Crew Limit: ${spaceship.crewLimit}.\nTry adding another Crew Quantity`);
+    if (spaceship.crew === spaceship.crewLimit) {
+        window.alert(`Cannot add Crew to ${spaceship.name} because its Crew Limit is full: ${spaceship.crew}/${spaceship.crewLimit}`);
+        return;
+    }
 
-        targetCrew = Number(window.prompt(`Enter Crew Quantity | Limit: ${spaceship.crewLimit}`)) ?? 0;
+    while (targetCrew > spaceship.crewLimit || targetCrew + spaceship.crew > spaceship.crewLimit) {
+        window.alert(`Current Crew: ${spaceship.crew}\nTarget Crew: ${targetCrew} is surpassing Crew Limit: ${spaceship.crewLimit}.\nTry adding another Crew Quantity`);
+
+        let input: string | null;
+
+        do {
+            input = window.prompt(`Enter Crew Quantity | Limit: ${spaceship.crewLimit - spaceship.crew}`);
+            targetCrew = Number(input);
+        } while (isNaN(targetCrew));
     }
 
     window.alert(`Adding ${targetCrew} crew to ${spaceship.name} Spaceship`);
@@ -42,6 +58,36 @@ const addCrew = (targetCrew: number, spaceship: { name: string, crewLimit: numbe
     spaceship.crew += targetCrew;
 
     return spaceship;
+}
+
+const sendToMission = (spaceship: { name: string, inMission: boolean, crewLimit: number, crew: number }) => {
+    if (spaceship.inMission === true) {
+        window.alert(`${spaceship.name} is already on mission.`);
+        return;
+    } else if (spaceship.crew < (Math.round(spaceship.crewLimit / 3))) {
+        window.alert(`${spaceship.name} needs at least ${Math.round(spaceship.crewLimit / 3)} crew to go on a mission.\nCurrent crew: ${spaceship.crew}`);
+        return;
+    } else {
+        spaceship.inMission = true;
+        window.alert(`${spaceship.name} was sent to mission.`);
+        return spaceship;
+    }
+}
+
+const listAllSpaceships = () => {
+    let message: string = "";
+
+    if (spaceships.length > 0) {
+        message += "Spaceships\n\n";
+
+        spaceships.map((spaceship) => {
+            message += `Name: ${spaceship.name} | ID: ${spaceship.id}\nPilot: ${spaceship.pilot}\nCurrent Crew: ${spaceship.crew} | Crew Limit: ${spaceship.crewLimit}\nIn Mission: ${spaceship.inMission}\n\n`;
+        });
+    } else {
+        message += "There's no Spaceships in storage.";
+    }
+
+    return message;
 }
 
 function menu() {
@@ -53,7 +99,11 @@ function menu() {
             case "1":
                 const spaceshipName: string = window.prompt("Enter Spaceship Name") ?? "";
                 const spaceshipPilot: string = window.prompt("Enter Spaceship Pilot") ?? "";
-                const crewLimit: number = Number(window.prompt("Enter Spaceship Crew Limit"));
+                let crewLimit: number = Number(window.prompt("Enter Spaceship Crew Limit"));
+
+                while (crewLimit < 1) {
+                    crewLimit = Number(window.prompt(`Crew Limit cannot be 0.\nEnter Spaceship Crew Limit`));
+                }
 
                 const spaceship = saveSpaceship(spaceshipName, spaceshipPilot, crewLimit);
 
@@ -63,11 +113,17 @@ function menu() {
 
                 break;
             case "2":
-                const spaceshipId = Number(window.prompt("Enter Spaceship ID"));
-                const currentSpaceship = spaceships.find(s => s.id === spaceshipId);
+                const currentSpaceship = findSpaceship(Number(window.prompt("Enter Spaceship ID")));
 
-                if (currentSpaceship) {
-                    const targetCrew: number = Number(window.prompt("Enter Target Crew")) ?? 0;
+                if (typeof currentSpaceship !== "undefined") {
+                    let targetCrew: number;
+                    let input: string | null;
+
+                    do {
+                        input = window.prompt("Enter Target Crew");
+                        targetCrew = Number(input);
+                    } while (isNaN(targetCrew));
+
                     addCrew(targetCrew, currentSpaceship);
                 } else {
                     window.alert("Couldn't find any Spaceships with this ID");
@@ -75,15 +131,22 @@ function menu() {
 
                 break;
             case "3":
-                window.alert("sending");
+                const spaceshipToMission = findSpaceship(Number(window.prompt("Enter Spaceship ID")));
+
+                if (typeof spaceshipToMission !== "undefined") {
+                    sendToMission(spaceshipToMission);
+                } else {
+                    window.alert("Couldn't find any Spaceships with this ID");
+                }
+
                 break;
             case "4":
-                window.alert("listing");
+                window.alert(listAllSpaceships());
                 break;
             case "5":
                 break;
             default:
-                window.alert("invalid option");
+                window.alert("Invalid option");
                 break;
         }
     } while (option !== "5")
