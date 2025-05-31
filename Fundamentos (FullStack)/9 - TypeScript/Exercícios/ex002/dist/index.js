@@ -42,6 +42,10 @@ const extractSatellites = (string) => {
         return;
     }
 };
+const findPlanet = (id) => {
+    const planet = planets.find(planet => planet.id === id);
+    return planet;
+};
 const savePlanet = (name, cordinates, situation, satellites) => {
     const planet = {
         name,
@@ -54,7 +58,7 @@ const savePlanet = (name, cordinates, situation, satellites) => {
     return planet;
 };
 function menu() {
-    var _a, _b, _c, _d;
+    var _a, _b, _c, _d, _e;
     let option;
     do {
         option = window.prompt(`Planets Control\n\n1 - Save Planet\n2 - Update Planet Situation\n3 - Add Satellite to Planet\n4 - Remove Satellite from Planet\n5 - List All Planets\n6 - Leave\n\nEnter Option`);
@@ -71,8 +75,17 @@ function menu() {
                 if (!planetSatellites)
                     break;
                 savePlanet(planetName, planetCordinates, planetSituation, planetSatellites);
+                window.alert(`Planet: ${planetName} was saved.`);
                 break;
             case "2":
+                const planet = findPlanet(Number(window.prompt("Enter Planet ID")));
+                if (!planet) {
+                    window.alert("Couldn't find any Planets with this ID");
+                    break;
+                }
+                const newSituation = (_e = window.prompt(`Enter new ${planet.name} Planet situation`)) !== null && _e !== void 0 ? _e : "habitable";
+                planet.situation = newSituation;
+                window.alert(`${planet.name} situation was changed to ${planet.situation}`);
                 break;
             case "3":
                 break;

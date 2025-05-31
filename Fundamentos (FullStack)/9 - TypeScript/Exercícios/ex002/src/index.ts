@@ -60,6 +60,12 @@ const extractSatellites = (string: string) => {
     }
 }
 
+const findPlanet = (id: number) => {
+    const planet = planets.find(planet => planet.id === id);
+
+    return planet;
+}
+
 const savePlanet = (name: string, cordinates: number[], situation: string, satellites: string[]) => {
     const planet = {
         name,
@@ -94,8 +100,22 @@ function menu() {
                 if (!planetSatellites) break;
 
                 savePlanet(planetName, planetCordinates, planetSituation, planetSatellites);
+                window.alert(`Planet: ${planetName} was saved.`);
                 break;
             case "2":
+                const planet: Planet | undefined = findPlanet(Number(window.prompt("Enter Planet ID")));
+
+                if (!planet) {
+                    window.alert("Couldn't find any Planets with this ID");
+                    break;
+                }
+
+                const newSituation: string = window.prompt(`Enter new ${planet.name} Planet situation`) ?? "habitable";
+
+                planet.situation = newSituation;
+
+                window.alert(`${planet.name} situation was changed to ${planet.situation}`);
+
                 break;
             case "3":
                 break;
