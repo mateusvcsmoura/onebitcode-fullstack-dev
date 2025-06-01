@@ -10,6 +10,8 @@ let planets: Array<Planet> = [];
 
 let id: number = 0;
 
+// Functions
+
 function idControl() {
     id++;
     return id;
@@ -80,6 +82,103 @@ const savePlanet = (name: string, cordinates: number[], situation: string, satel
     return planet;
 }
 
+// Menu Options
+
+function option1() {
+    const planetName: string = window.prompt("Enter Planet Name") ?? "Unknown";
+
+    let planetCordinatesInput: string = window.prompt("Enter Planet Cordinates ex: [x, y]") ?? "";
+    const planetCordinates: number[] | undefined = extractCordinates(planetCordinatesInput);
+    if (!planetCordinates) return;
+
+    const planetSituation: string = window.prompt("Enter Planet Situation [habitable - non habitable]") ?? "";
+
+    let planetSatellitesInput: string = window.prompt("Enter Satellites ex: [sat1, sat2, sat3]") ?? "";
+    const planetSatellites: string[] | undefined = extractSatellites(planetSatellitesInput);
+    if (!planetSatellites) return;
+
+    const savedPlanet = savePlanet(planetName, planetCordinates, planetSituation, planetSatellites);
+
+    if (savedPlanet) {
+        return window.alert(`Planet: ${planetName} was saved.`);
+    } else {
+        throw new Error("Error while trying to save planet. Check functions params/args");
+    }
+}
+
+function option2() {
+    const planet: Planet | undefined = findPlanet(Number(window.prompt("Enter Planet ID")));
+
+    if (!planet) {
+        window.alert("Couldn't find any Planets with this ID");
+        return;
+    }
+
+    const newSituation: string = window.prompt(`Enter new ${planet.name} Planet situation`) ?? "habitable";
+
+    planet.situation = newSituation;
+
+    return window.alert(`${planet.name} situation was changed to ${planet.situation}`);
+}
+
+function option3() {
+    const planet: Planet | undefined = findPlanet(Number(window.prompt("Enter Planet ID")));
+
+    if (!planet) {
+        window.alert("Couldn't find any Planets with this ID");
+        return;
+    }
+
+    let satellitesInput: string = window.prompt("Enter Satellites ex: [sat1, sat2, sat3]") ?? "";
+    const satellites: string[] | undefined = extractSatellites(satellitesInput);
+    if (!satellites) return;
+
+    satellites.forEach(satellite => planet.satellites.push(satellite));
+
+    window.alert(`${satellitesInput} satellites added to ${planet.name} Planet.`);
+}
+
+function option4() {
+    const planet: Planet | undefined = findPlanet(Number(window.prompt("Enter Planet ID")));
+
+    if (!planet) {
+        window.alert("Couldn't find any Planets with this ID");
+        return;
+    }
+
+    const satelliteToRemove = window.prompt(`Planet Info\n\nPlanet: ${planet.name}\nSatellites: ${planet.satellites}\n\nWitch Satellite do you want to remove?`)?.toLowerCase() ?? "";
+
+    if (satelliteToRemove !== "" && planet.satellites.length > 0) {
+        const foundSatellite = planet.satellites.findIndex(s => s.toLowerCase() === satelliteToRemove.toLowerCase());
+
+        if (foundSatellite !== -1) {
+            planet.satellites.splice(foundSatellite, 1);
+
+            window.alert(`Removed ${satelliteToRemove} from ${planet.name} Planet`);
+        } else {
+            window.alert("Wrong input. Type a Registered Satellite.");
+        }
+    } else {
+        return window.alert("Wrong input. Type something or check if there is a Satellite registered on this Planet.");
+    }
+
+    return;
+}
+
+function option5() {
+    if (planets.length > 0) {
+        let message: string = "Planets Registered\n\n";
+
+        planets.map((planet) => {
+            message += `\nPlanet ${planet.name}\nCordinates: ${planet.cordinates}\nSituation: ${planet.situation}\nSatellites: ${planet.satellites}\nID: ${planet.id}\n`;
+        });
+
+        return window.alert(message);
+    } else {
+        return window.alert("Not enough Planets registered");
+    }
+}
+
 function menu() {
     let option: unknown;
     do {
@@ -87,41 +186,19 @@ function menu() {
 
         switch (option) {
             case "1":
-                const planetName: string = window.prompt("Enter Planet Name") ?? "Unknown";
-
-                let planetCordinatesInput: string = window.prompt("Enter Planet Cordinates ex: [x, y]") ?? "";
-                const planetCordinates: number[] | undefined = extractCordinates(planetCordinatesInput);
-                if (!planetCordinates) break;
-
-                const planetSituation: string = window.prompt("Enter Planet Situation [habitable - non habitable]") ?? "";
-
-                let planetSatellitesInput: string = window.prompt("Enter Satellites ex: [sat1, sat2, sat3]") ?? "";
-                const planetSatellites: string[] | undefined = extractSatellites(planetSatellitesInput);
-                if (!planetSatellites) break;
-
-                savePlanet(planetName, planetCordinates, planetSituation, planetSatellites);
-                window.alert(`Planet: ${planetName} was saved.`);
+                option1();
                 break;
             case "2":
-                const planet: Planet | undefined = findPlanet(Number(window.prompt("Enter Planet ID")));
-
-                if (!planet) {
-                    window.alert("Couldn't find any Planets with this ID");
-                    break;
-                }
-
-                const newSituation: string = window.prompt(`Enter new ${planet.name} Planet situation`) ?? "habitable";
-
-                planet.situation = newSituation;
-
-                window.alert(`${planet.name} situation was changed to ${planet.situation}`);
-
+                option2();
                 break;
             case "3":
+                option3();
                 break;
             case "4":
+                option4();
                 break;
             case "5":
+                option5();
                 break;
             case "6":
                 break;

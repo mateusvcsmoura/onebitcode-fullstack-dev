@@ -1,6 +1,7 @@
 "use strict";
 let planets = [];
 let id = 0;
+// Functions
 function idControl() {
     id++;
     return id;
@@ -57,41 +58,106 @@ const savePlanet = (name, cordinates, situation, satellites) => {
     planets.push(planet);
     return planet;
 };
+// Menu Options
+function option1() {
+    var _a, _b, _c, _d;
+    const planetName = (_a = window.prompt("Enter Planet Name")) !== null && _a !== void 0 ? _a : "Unknown";
+    let planetCordinatesInput = (_b = window.prompt("Enter Planet Cordinates ex: [x, y]")) !== null && _b !== void 0 ? _b : "";
+    const planetCordinates = extractCordinates(planetCordinatesInput);
+    if (!planetCordinates)
+        return;
+    const planetSituation = (_c = window.prompt("Enter Planet Situation [habitable - non habitable]")) !== null && _c !== void 0 ? _c : "";
+    let planetSatellitesInput = (_d = window.prompt("Enter Satellites ex: [sat1, sat2, sat3]")) !== null && _d !== void 0 ? _d : "";
+    const planetSatellites = extractSatellites(planetSatellitesInput);
+    if (!planetSatellites)
+        return;
+    const savedPlanet = savePlanet(planetName, planetCordinates, planetSituation, planetSatellites);
+    if (savedPlanet) {
+        return window.alert(`Planet: ${planetName} was saved.`);
+    }
+    else {
+        throw new Error("Error while trying to save planet. Check functions params/args");
+    }
+}
+function option2() {
+    var _a;
+    const planet = findPlanet(Number(window.prompt("Enter Planet ID")));
+    if (!planet) {
+        window.alert("Couldn't find any Planets with this ID");
+        return;
+    }
+    const newSituation = (_a = window.prompt(`Enter new ${planet.name} Planet situation`)) !== null && _a !== void 0 ? _a : "habitable";
+    planet.situation = newSituation;
+    return window.alert(`${planet.name} situation was changed to ${planet.situation}`);
+}
+function option3() {
+    var _a;
+    const planet = findPlanet(Number(window.prompt("Enter Planet ID")));
+    if (!planet) {
+        window.alert("Couldn't find any Planets with this ID");
+        return;
+    }
+    let satellitesInput = (_a = window.prompt("Enter Satellites ex: [sat1, sat2, sat3]")) !== null && _a !== void 0 ? _a : "";
+    const satellites = extractSatellites(satellitesInput);
+    if (!satellites)
+        return;
+    satellites.forEach(satellite => planet.satellites.push(satellite));
+    window.alert(`${satellitesInput} satellites added to ${planet.name} Planet.`);
+}
+function option4() {
+    var _a, _b;
+    const planet = findPlanet(Number(window.prompt("Enter Planet ID")));
+    if (!planet) {
+        window.alert("Couldn't find any Planets with this ID");
+        return;
+    }
+    const satelliteToRemove = (_b = (_a = window.prompt(`Planet Info\n\nPlanet: ${planet.name}\nSatellites: ${planet.satellites}\n\nWitch Satellite do you want to remove?`)) === null || _a === void 0 ? void 0 : _a.toLowerCase()) !== null && _b !== void 0 ? _b : "";
+    if (satelliteToRemove !== "" && planet.satellites.length > 0) {
+        const foundSatellite = planet.satellites.findIndex(s => s.toLowerCase() === satelliteToRemove.toLowerCase());
+        if (foundSatellite !== -1) {
+            planet.satellites.splice(foundSatellite, 1);
+            window.alert(`Removed ${satelliteToRemove} from ${planet.name} Planet`);
+        }
+        else {
+            window.alert("Wrong input. Type a Registered Satellite.");
+        }
+    }
+    else {
+        return window.alert("Wrong input. Type something or check if there is a Satellite registered on this Planet.");
+    }
+    return;
+}
+function option5() {
+    if (planets.length > 0) {
+        let message = "Planets Registered\n\n";
+        planets.map((planet) => {
+            message += `\nPlanet ${planet.name}\nCordinates: ${planet.cordinates}\nSituation: ${planet.situation}\nSatellites: ${planet.satellites}\nID: ${planet.id}\n`;
+        });
+        return window.alert(message);
+    }
+    else {
+        return window.alert("Not enough Planets registered");
+    }
+}
 function menu() {
-    var _a, _b, _c, _d, _e;
     let option;
     do {
         option = window.prompt(`Planets Control\n\n1 - Save Planet\n2 - Update Planet Situation\n3 - Add Satellite to Planet\n4 - Remove Satellite from Planet\n5 - List All Planets\n6 - Leave\n\nEnter Option`);
         switch (option) {
             case "1":
-                const planetName = (_a = window.prompt("Enter Planet Name")) !== null && _a !== void 0 ? _a : "Unknown";
-                let planetCordinatesInput = (_b = window.prompt("Enter Planet Cordinates ex: [x, y]")) !== null && _b !== void 0 ? _b : "";
-                const planetCordinates = extractCordinates(planetCordinatesInput);
-                if (!planetCordinates)
-                    break;
-                const planetSituation = (_c = window.prompt("Enter Planet Situation [habitable - non habitable]")) !== null && _c !== void 0 ? _c : "";
-                let planetSatellitesInput = (_d = window.prompt("Enter Satellites ex: [sat1, sat2, sat3]")) !== null && _d !== void 0 ? _d : "";
-                const planetSatellites = extractSatellites(planetSatellitesInput);
-                if (!planetSatellites)
-                    break;
-                savePlanet(planetName, planetCordinates, planetSituation, planetSatellites);
-                window.alert(`Planet: ${planetName} was saved.`);
+                option1();
                 break;
             case "2":
-                const planet = findPlanet(Number(window.prompt("Enter Planet ID")));
-                if (!planet) {
-                    window.alert("Couldn't find any Planets with this ID");
-                    break;
-                }
-                const newSituation = (_e = window.prompt(`Enter new ${planet.name} Planet situation`)) !== null && _e !== void 0 ? _e : "habitable";
-                planet.situation = newSituation;
-                window.alert(`${planet.name} situation was changed to ${planet.situation}`);
+                option2();
                 break;
             case "3":
+                option3();
                 break;
             case "4":
+                option4();
                 break;
             case "5":
+                option5();
                 break;
             case "6":
                 break;
