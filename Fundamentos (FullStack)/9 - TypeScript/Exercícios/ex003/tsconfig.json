@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "module": "ESNext", // ou "ES2022"
+    "target": "ES2020", // ou superior
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "outDir": "./dist", // ou onde quiser
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true
+  }
+}
