@@ -6,6 +6,9 @@ function idControl() {
     id++;
     return id;
 }
+function isValidSituation(situation) {
+    return situation === "habitable" || situation === "non habitable";
+}
 const extractCordinates = (string) => {
     let x = 0;
     let y = 0;
@@ -66,7 +69,12 @@ function option1() {
     const planetCordinates = extractCordinates(planetCordinatesInput);
     if (!planetCordinates)
         return;
-    const planetSituation = (_c = window.prompt("Enter Planet Situation [habitable - non habitable]")) !== null && _c !== void 0 ? _c : "";
+    const planetSituationInput = (_c = window.prompt("Enter Planet Situation [habitable - non habitable]")) !== null && _c !== void 0 ? _c : "";
+    if (!isValidSituation(planetSituationInput)) {
+        window.alert("Situation is not valid.");
+        return;
+    }
+    const planetSituation = planetSituationInput;
     let planetSatellitesInput = (_d = window.prompt("Enter Satellites ex: [sat1, sat2, sat3]")) !== null && _d !== void 0 ? _d : "";
     const planetSatellites = extractSatellites(planetSatellitesInput);
     if (!planetSatellites)
@@ -86,8 +94,13 @@ function option2() {
         window.alert("Couldn't find any Planets with this ID");
         return;
     }
-    const newSituation = (_a = window.prompt(`Enter new ${planet.name} Planet situation`)) !== null && _a !== void 0 ? _a : "habitable";
-    planet.situation = newSituation;
+    let newSituation = (_a = window.prompt(`Enter new ${planet.name} Planet situation`)) !== null && _a !== void 0 ? _a : "";
+    if (!isValidSituation(newSituation)) {
+        window.alert("Situation is not valid.");
+        return;
+    }
+    const planetSituation = newSituation;
+    planet.situation = planetSituation;
     return window.alert(`${planet.name} situation was changed to ${planet.situation}`);
 }
 function option3() {
