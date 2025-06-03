@@ -109,7 +109,7 @@ async function showUserInfo(targetUser: string) {
 }
 
 async function getUserRepos(targetQuantity: number, user: User) {
-    const url = `https://api.github.com/users/${user.login}/repos`;
+    const url = `https://api.github.com/users/${user.login}/repos`; // user.repos_url
 
     try {
         const headers = {
