@@ -3,69 +3,53 @@ LOG
 OS Platform: linux
 OS Architeture: x64
 CPU: Intel(R) Core(TM) i5-3470 CPU @ 3.20GHz
-Uptime: 6822.04 seconds
-Memory Use: 43.52%
+Uptime: 00:02:07:36
+Memory Use: 39.26%
 
 LOG
 
 OS Platform: linux
 OS Architeture: x64
 CPU: Intel(R) Core(TM) i5-3470 CPU @ 3.20GHz
-Uptime: 6825.04 seconds
-Memory Use: 43.69%
+Uptime: 00:02:07:39
+Memory Use: 39.24%
 
 LOG
 
 OS Platform: linux
 OS Architeture: x64
 CPU: Intel(R) Core(TM) i5-3470 CPU @ 3.20GHz
-Uptime: 6828.05 seconds
-Memory Use: 43.60%
+Uptime: 00:02:07:42
+Memory Use: 39.24%
 
 LOG
 
 OS Platform: linux
 OS Architeture: x64
 CPU: Intel(R) Core(TM) i5-3470 CPU @ 3.20GHz
-Uptime: 6831.05 seconds
-Memory Use: 43.51%
+Uptime: 00:02:07:45
+Memory Use: 39.33%
 
 LOG
 
 OS Platform: linux
 OS Architeture: x64
 CPU: Intel(R) Core(TM) i5-3470 CPU @ 3.20GHz
-Uptime: 6834.05 seconds
-Memory Use: 43.54%
+Uptime: 00:02:07:48
+Memory Use: 39.22%
 
 LOG
 
 OS Platform: linux
 OS Architeture: x64
 CPU: Intel(R) Core(TM) i5-3470 CPU @ 3.20GHz
-Uptime: 6837.06 seconds
-Memory Use: 43.48%
+Uptime: 00:02:07:51
+Memory Use: 39.26%
 
 LOG
 
 OS Platform: linux
 OS Architeture: x64
 CPU: Intel(R) Core(TM) i5-3470 CPU @ 3.20GHz
-Uptime: 6840.06 seconds
-Memory Use: 43.44%
-
-LOG
-
-OS Platform: linux
-OS Architeture: x64
-CPU: Intel(R) Core(TM) i5-3470 CPU @ 3.20GHz
-Uptime: 6843.06 seconds
-Memory Use: 43.41%
-
-LOG
-
-OS Platform: linux
-OS Architeture: x64
-CPU: Intel(R) Core(TM) i5-3470 CPU @ 3.20GHz
-Uptime: 6846.07 seconds
-Memory Use: 43.36%
+Uptime: 00:02:07:54
+Memory Use: 39.25%
