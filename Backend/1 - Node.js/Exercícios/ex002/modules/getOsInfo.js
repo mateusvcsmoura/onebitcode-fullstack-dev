@@ -15,7 +15,7 @@ function getOsInfo() {
     const arch = os.arch();
     const cpu = os.cpus()[0]?.model;
     const uptime = `${pad(days)}:${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
-    const memoryUse = `${((os.freemem() / os.totalmem()) * 100).toFixed(2)}%`;
+    const memoryUse = `${(((os.totalmem() - os.freemem()) / os.totalmem()) * 100).toFixed(2)}%`;
 
     const sys = { system, arch, cpu, uptime, memoryUse };
 
