@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin | Blog Express</title>
+    <link rel="stylesheet" href="/assets/style.css">
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+        <div class="container">
+            <h1>Painel Administrativo</h1>
+
+            <a href="/admin/create" class="btn-create">Escrever um novo post</a>
+
+            <hr class="separator">
+
+            <ul class="posts">
+                <% posts.forEach(post=> { %>
+                    <li>
+                        <article class="post">
+                            <a href="/posts/<%= post.id %>" class="post-title">
+                                <h2>
+                                    <%= post.title %>
+                                </h2>
+                            </a>
+
+                            <div class="btn-group">
+                                <a href="/admin/edit/<%= post.id %>" class="btn-edit">Editar</a>
+
+                                <form id="delete-form" action="/admin/delete/<%= post.id %>" method="post">
+                                    <button type="submit" class="btn-delete">Excluir</button>
+                                </form>
+                            </div>
+                        </article>
+                    </li>
+                    <% }); %>
+            </ul>
+        </div>
+
+        <%- include('partials/footer') %>
+
+            <script src="/assets/script.js"></script>
+</body>
+
+</html>
