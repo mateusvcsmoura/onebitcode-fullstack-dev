@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/list.css" />
+    <title>
+        <%= list.name %> | Node Productive
+    </title>
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+        <main class="wrapper">
+            <div class="list-info">
+                <h1 class="title">
+                    <%= list.name %>
+                </h1>
+                <p><strong>Description:</strong>
+                    <%= list.description %>
+                </p>
+                <p><strong>Situation:</strong>
+                    <%= list.situation %>
+                </p>
+                <p><strong>Created At:</strong>
+                    <%= list.createdAt.toLocaleString() %>
+                </p>
+            </div>
+
+            <div class="tasks">
+                <h2>Tasks</h2>
+                <% list.tasks.forEach((task, index)=> { %>
+                    <div class="task" data-index="<%= index %>">
+                        <span class="task-name <%= task.situation === 'done' ? 'done' : '' %>">
+                            <%= task.name %>
+                        </span>
+                        <% if (task.situation !=='done' ) { %>
+                            <button class="complete-btn">Concluir</button>
+                            <% } %>
+                    </div>
+                    <% }) %>
+
+                        <!-- Form to add new task -->
+                        <form class="add-task-form" action="/lists/<%= list.id %>/tasks" method="POST">
+                            <label for="newTask">Add New Task:</label>
+                            <input type="text" id="newTask" name="taskName" placeholder="Task name..." required />
+                            <button type="submit">Adicionar Tarefa</button>
+                        </form>
+            </div>
+        </main>
+
+        <script src="/task-actions.js"></script>
+</body>
+
+</html>

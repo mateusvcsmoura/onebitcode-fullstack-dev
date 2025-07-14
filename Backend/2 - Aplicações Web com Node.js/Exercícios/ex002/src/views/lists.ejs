@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/lists.css" />
+    <title>Task Lists | Node Productive</title>
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+        <main class="wrapper">
+            <h1 class="title">All Task Lists</h1>
+
+            <% if (lists.length===0) { %>
+                <p>No task lists available.</p>
+                <% } else { %>
+                    <% lists.forEach(list=> { %>
+                        <div class="task-list">
+                            <h2>
+                                <a href="list/<%=list.id%>">
+                                    <%= list.name %>
+                                </a>
+                            </h2>
+                            <p><strong>Description:</strong>
+                                <%= list.description %>
+                            </p>
+                            <p><strong>Tasks:</strong>
+                                <%= list.tasks.length %> task(s)
+                            </p>
+                            <p><strong>Situation:</strong>
+                                <%= list.situation %>
+                            </p>
+                            <p><strong>Created At:</strong>
+                                <%= list.createdAt.toLocaleString() %>
+                            </p>
+                        </div>
+                        <% }) %>
+                            <% } %>
+        </main>
+</body>
+
+</html>
