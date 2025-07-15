@@ -1,4 +1,4 @@
-const lists = [
+let lists = [
     { id: "1", name: "Task List 1", description: "Description 1", tasks: [{ name: "task1", situation: "in progress" }, { name: "task2", situation: "done" }], situation: "in progress", createdAt: new Date() },
     { id: "2", name: "Task List 2", description: "Description 2", tasks: [{ name: "task1", situation: "in progress" }, { name: "task2", situation: "done" }], situation: "in progress", createdAt: new Date() }
 ];
@@ -29,6 +29,11 @@ const listModel = {
 
     saveList: (list) => {
         lists.unshift(list);
+        return;
+    },
+
+    deleteList: (id) => {
+        lists = lists.filter(list => list.id !== id);
         return;
     }
 };

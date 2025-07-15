@@ -12,5 +12,6 @@ router.get('/lists', listController.lists);
 router.get('/new-list', listController.create);
 router.post('/new-list', listController.save);
 router.get('/list/:id', listController.show);
+router.post('/list/delete/:id', listController.delete);
 
 module.exports = router;

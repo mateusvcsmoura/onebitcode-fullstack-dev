@@ -19,11 +19,16 @@
                 <% } else { %>
                     <% lists.forEach(list=> { %>
                         <div class="task-list">
-                            <h2>
-                                <a href="list/<%=list.id%>">
-                                    <%= list.name %>
-                                </a>
-                            </h2>
+                            <div class="list-header">
+                                <h2>
+                                    <a href="/list/<%= list.id %>">
+                                        <%= list.name %>
+                                    </a>
+                                </h2>
+                                <form action="/list/delete/<%=list.id%>" method="POST" class="delete-form">
+                                    <button type="submit" class="delete-btn">Delete</button>
+                                </form>
+                            </div>
                             <p><strong>Description:</strong>
                                 <%= list.description %>
                             </p>
@@ -40,6 +45,7 @@
                         <% }) %>
                             <% } %>
         </main>
+        <script src="/list-actions.js"></script>
 </body>
 
 </html>

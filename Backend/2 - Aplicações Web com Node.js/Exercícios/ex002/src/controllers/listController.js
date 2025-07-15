@@ -27,6 +27,14 @@ const listController = {
         const list = listModel.getListById(listId);
 
         return res.render('list', { list });
+    },
+
+    // POST /list/delete/:id
+    delete: (req, res) => {
+        const id = req.params.id;
+        listModel.deleteList(id);
+
+        return res.redirect('/lists');
     }
 };
 

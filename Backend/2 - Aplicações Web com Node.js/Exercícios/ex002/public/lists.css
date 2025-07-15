@@ -65,3 +65,24 @@ a {
     margin: 0.3rem 0;
     font-size: 0.95rem;
 }
+
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.delete-btn {
+    background-color: #ff5e5e;
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.delete-btn:hover {
+    background-color: #e04444;
+}
