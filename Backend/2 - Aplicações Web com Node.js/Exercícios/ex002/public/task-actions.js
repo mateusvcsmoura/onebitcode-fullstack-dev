@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (btn) {
             btn.addEventListener("click", () => {
                 name.classList.add("done");
-                btn.remove();
             });
         }
     });

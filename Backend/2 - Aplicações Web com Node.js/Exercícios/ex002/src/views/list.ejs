@@ -25,25 +25,36 @@
                     <%= list.situation %>
                 </p>
                 <p><strong>Created At:</strong>
-                    <%= list.createdAt.toLocaleString() %>
+                    <%= list.createdAt ? list.createdAt.toLocaleString() : "Data desconhecida" %>
                 </p>
+
             </div>
 
             <div class="tasks">
                 <h2>Tasks</h2>
+
                 <% list.tasks.forEach((task, index)=> { %>
                     <div class="task" data-index="<%= index %>">
                         <span class="task-name <%= task.situation === 'done' ? 'done' : '' %>">
                             <%= task.name %>
                         </span>
-                        <% if (task.situation !=='done' ) { %>
-                            <button class="complete-btn">Concluir</button>
-                            <% } %>
+
+                        <div class="task-actions">
+                            <% if (task.situation !=='done' ) { %>
+                                <form action="/list/<%= list.id %>/complete/<%= task.id %>" method="POST">
+                                    <button type="submit" class="complete-btn">Finish</button>
+                                </form>
+                                <% } %>
+
+                                    <form action="/list/<%= list.id %>/delete/<%= task.id %>" method="POST">
+                                        <button type="submit" class="delete-btn">Delete</button>
+                                    </form>
+                        </div>
                     </div>
                     <% }) %>
 
                         <!-- Form to add new task -->
-                        <form class="add-task-form" action="/" method="POST">
+                        <form class="add-task-form" action="/list/new-task/<%= list.id %>" method="POST">
                             <label for="newTask">Add New Task:</label>
                             <input type="text" id="newTask" name="taskName" placeholder="Task name..." required />
                             <button type="submit">Adicionar Tarefa</button>
