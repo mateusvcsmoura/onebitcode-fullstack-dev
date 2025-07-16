@@ -43,6 +43,7 @@ const listModel = {
 
         const currentList = lists.find(list => list.id === listId);
         currentList.tasks.push(task);
+        currentList.situation = "in progress"; // can be a toggle fn
 
         return currentList;
     },

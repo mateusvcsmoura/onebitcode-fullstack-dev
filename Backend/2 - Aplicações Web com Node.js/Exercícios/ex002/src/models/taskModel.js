@@ -4,26 +4,6 @@ const { nanoid } = require('nanoid');
 
 // TASK -> NAME, SITUATION
 const taskModel = {
-    createTask: (listId, taskName) => {
-        const task = {
-            name: taskName,
-            situation: "in progress",
-            id: nanoid()
-        };
-
-        listModel.addTaskInList(listId, task);
-
-        return task;
-    },
-
-    findTask: function (listId, taskId) {
-        const currentList = listModel.getListById(listId);
-        if (!currentList) return;
-
-        const task = currentList.tasks.find(task => task.id === taskId);
-        return task;
-    },
-
     checkTasksProgress: function (listId) {
         const currentList = listModel.getListById(listId);
         let allTasks = currentList.tasks.length;
@@ -38,6 +18,27 @@ const taskModel = {
         if (allTasks === finishedTasks) {
             listModel.finishList(currentList);
         }
+    },
+
+    createTask: function (listId, taskName) {
+        const task = {
+            name: taskName,
+            situation: "in progress",
+            id: nanoid()
+        };
+
+        listModel.addTaskInList(listId, task);
+        this.checkTasksProgress(listId);
+
+        return task;
+    },
+
+    findTask: function (listId, taskId) {
+        const currentList = listModel.getListById(listId);
+        if (!currentList) return;
+
+        const task = currentList.tasks.find(task => task.id === taskId);
+        return task;
     },
 
     finishTask: function (listId, taskId) {
