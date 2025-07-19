@@ -5,16 +5,20 @@ let playlists = [
 ];
 
 const playlistsModel = {
-    getAllPlaylists: () => {
+    getAllPlaylists() {
         return playlists;
     },
 
-    getPlaylistById: (id) => {
+    getPlaylistById(id) {
         const playlist = playlists.find(playlist => playlist.id === id);
         return playlist;
     },
 
-    createPlaylist: (playlistName, tags, songs = []) => {
+    createPlaylist(playlistName, tags, songs = []) {
+        if (!Array.isArray(tags)) {
+            tags = tags.split(','); // "rap, pop, indie" -> ["rap", "pop", "indie"]
+        }
+
         const newPlaylist = {
             name: playlistName,
             tags,
@@ -25,10 +29,29 @@ const playlistsModel = {
         return newPlaylist;
     },
 
-    savePlaylist: (playlist) => {
+    savePlaylist(playlist) {
         if (playlist) {
             return playlists.push(playlist);
         }
+    },
+
+    // PUT /playlists/:id/
+    updatePlaylist(playlistId, playlistName, playlistTags) {
+        const playlist = this.getPlaylistById(playlistId);
+
+        if (playlistName) {
+            playlist.name = playlistName;
+        }
+
+        if (playlistTags) {
+            if (!Array.isArray(playlistTags)) {
+                playlistTags = playlistTags.split(",");
+            }
+
+            playlist.tags = playlistTags;
+        }
+
+        return playlist;
     }
 };
 

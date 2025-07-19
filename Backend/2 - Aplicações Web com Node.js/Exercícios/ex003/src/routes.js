@@ -12,4 +12,6 @@ router.get('/playlists/:id', playlistsController.show);
 
 router.post('/playlists', playlistsController.create);
 
+router.put('/playlists/:id', playlistsController.update);
+
 module.exports = router;
