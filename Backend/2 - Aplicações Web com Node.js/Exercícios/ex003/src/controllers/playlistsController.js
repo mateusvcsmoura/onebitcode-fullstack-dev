@@ -60,7 +60,27 @@ const playlistsController = {
         }
 
         return res.status(204).json(playlists);
-    }
+    },
+
+    // POST /playlists/playlist/:id/new-song
+    createSong: (req, res) => {
+        const { name, singer, year, album } = req.body;
+        const { id } = req.params;
+
+        if (!name || !singer || !year) {
+            return res.status(400).json({ message: "invalid songs arguments" });
+        }
+
+        if (name && typeof (name) !== "string" || year && typeof (year) !== "number") {
+            return res.status(400).json({ message: "invalid songs arguments" });
+        }
+        const newSong = playlistsModel.createSong(name, singer, year, album);
+        const updatedPlaylist = playlistsModel.saveSongInPlaylist(id, newSong);
+
+        return res.status(201).json(updatedPlaylist);
+    },
+
+    // DELETE /playlists/playlist/:id/delete-song/:songId
 };
 
 module.exports = playlistsController;

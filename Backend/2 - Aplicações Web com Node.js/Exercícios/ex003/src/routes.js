@@ -11,6 +11,7 @@ router.get('/playlists', playlistsController.index);
 router.get('/playlists/:id', playlistsController.show);
 
 router.post('/playlists', playlistsController.create);
+router.post('/playlists/playlist/:id/new-song', playlistsController.createSong);
 
 router.put('/playlists/:id', playlistsController.update);
 

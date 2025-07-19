@@ -62,6 +62,25 @@ const playlistsModel = {
             return playlists;
         }
 
+    },
+
+    createSong(songName, singer, year, album = "Single") {
+        const newSong = {
+            name: songName,
+            singer: singer.toString(),
+            year,
+            album,
+            id: nanoid()
+        }
+
+        return newSong;
+    },
+
+    saveSongInPlaylist(playlistId, song) {
+        const playlist = this.getPlaylistById(playlistId);
+        playlist.songs.push(song);
+
+        return playlist;
     }
 };
 
