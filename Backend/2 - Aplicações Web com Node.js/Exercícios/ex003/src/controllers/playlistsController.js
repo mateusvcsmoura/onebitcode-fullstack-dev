@@ -49,6 +49,18 @@ const playlistsController = {
 
         return res.status(200).json(playlist);
     },
+
+    // DELETE /playlists/:id
+    delete: (req, res) => {
+        const { id } = req.params;
+        const playlists = playlistsModel.deletePlaylist(id);
+
+        if (!playlists) {
+            return res.status(404).json({ message: "playlist not found" });
+        }
+
+        return res.status(204).json(playlists);
+    }
 };
 
 module.exports = playlistsController;

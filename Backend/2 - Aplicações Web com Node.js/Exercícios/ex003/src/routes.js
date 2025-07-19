@@ -14,4 +14,6 @@ router.post('/playlists', playlistsController.create);
 
 router.put('/playlists/:id', playlistsController.update);
 
+router.delete('/playlists/:id', playlistsController.delete);
+
 module.exports = router;

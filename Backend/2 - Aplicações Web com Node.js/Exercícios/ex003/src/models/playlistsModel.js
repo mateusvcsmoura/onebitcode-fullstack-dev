@@ -52,6 +52,16 @@ const playlistsModel = {
         }
 
         return playlist;
+    },
+
+    deletePlaylist(id) {
+        const playlistIndex = playlists.findIndex(playlist => playlist.id === id);
+
+        if (playlistIndex !== -1) {
+            playlists.splice(playlistIndex, 1);
+            return playlists;
+        }
+
     }
 };
 
