@@ -81,6 +81,16 @@ const playlistsModel = {
         playlist.songs.push(song);
 
         return playlist;
+    },
+
+    deleteSongFromPlaylist(playlist, songId) {
+        const song = playlist.songs.find(song => song.id === songId);
+
+        if (!playlist || !song) return;
+
+        playlist.songs = playlist.songs.filter(existingSong => existingSong !== song);
+
+        return playlist;
     }
 };
 

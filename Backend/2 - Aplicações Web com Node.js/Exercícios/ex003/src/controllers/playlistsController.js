@@ -77,10 +77,30 @@ const playlistsController = {
         const newSong = playlistsModel.createSong(name, singer, year, album);
         const updatedPlaylist = playlistsModel.saveSongInPlaylist(id, newSong);
 
+        if (!newSong || !updatedPlaylist) {
+            return res.status(400).json({ message: "invalid songs/playlist arguments" });
+        }
+
         return res.status(201).json(updatedPlaylist);
     },
 
     // DELETE /playlists/playlist/:id/delete-song/:songId
+    deleteSong: (req, res) => {
+        const { id, songId } = req.params;
+        let playlist = playlistsModel.getPlaylistById(id);
+
+        if (!playlist) {
+            return res.status(404).json({ message: "playlist not found" });
+        }
+
+        playlist = playlistsModel.deleteSongFromPlaylist(playlist, songId);
+
+        if (!playlist) {
+            return res.status(400).json({ message: "invalid song arguments" });
+        }
+
+        return res.status(200).json(playlist);
+    }
 };
 
 module.exports = playlistsController;
