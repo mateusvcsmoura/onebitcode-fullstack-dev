@@ -17,4 +17,9 @@ app.get('/games/:id', gamesController.show);
 app.post('/games', gamesController.save);
 app.post('/games/:id/genres', gamesController.addGenre);
 
+app.put('/games/:id', gamesController.update);
+
+app.delete('/games/:id', gamesController.delete);
+app.delete('/games/:id/genres/:genre', gamesController.deleteGenre);
+
 app.listen(PORT, () => console.log(`server running on http://localhost:${PORT}`));
