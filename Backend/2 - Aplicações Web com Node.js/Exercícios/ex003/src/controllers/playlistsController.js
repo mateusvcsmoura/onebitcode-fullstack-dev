@@ -22,8 +22,24 @@ const playlistsController = {
     create: (req, res) => {
         let { name, tags, songs } = req.body;
 
-        if (typeof (name) !== "string" || !Array.isArray(tags) && typeof (tags) !== "string") {
+        if (typeof name !== "string" || !(Array.isArray(tags) || typeof tags === "string")) {
             return res.status(400).json({ message: "invalid playlist" });
+        }
+
+        if (songs != null) {
+            if (!Array.isArray(songs)) {
+                return res.status(400).json({ message: "invalid songs" });
+            }
+
+            const hasEveryProp = songs.every(song =>
+                song.hasOwnProperty("name") &&
+                song.hasOwnProperty("singer") &&
+                song.hasOwnProperty("year")
+            );
+
+            if (!hasEveryProp) {
+                return res.status(400).json({ message: "invalid songs" });
+            }
         }
 
         const playlist = playlistsModel.createPlaylist(name, tags, songs);
@@ -41,13 +57,15 @@ const playlistsController = {
             return res.status(400).json({ message: "invalid playlist new arguments" });
         }
 
-        const playlist = playlistsModel.updatePlaylist(id, name, tags);
+        const playlist = playlistsModel.getPlaylistById(id);
 
         if (!playlist) {
             return res.status(404).json({ message: "playlist not found" });
         }
 
-        return res.status(200).json(playlist);
+        const updatedPlaylist = playlistsModel.updatePlaylist(playlist, name, tags);
+
+        return res.status(200).json(updatedPlaylist);
     },
 
     // DELETE /playlists/:id
@@ -75,7 +93,13 @@ const playlistsController = {
             return res.status(400).json({ message: "invalid songs arguments" });
         }
         const newSong = playlistsModel.createSong(name, singer, year, album);
-        const updatedPlaylist = playlistsModel.saveSongInPlaylist(id, newSong);
+        const playlist = playlistsModel.getPlaylistById(id);
+
+        if (!playlist) {
+            return res.status(404).json({ message: "playlist not found" });
+        }
+
+        const updatedPlaylist = playlistsModel.saveSongInPlaylist(playlist, newSong);
 
         if (!newSong || !updatedPlaylist) {
             return res.status(400).json({ message: "invalid songs/playlist arguments" });

@@ -19,6 +19,10 @@ const playlistsModel = {
             tags = tags.split(','); // "rap, pop, indie" -> ["rap", "pop", "indie"]
         }
 
+        if (songs) {
+            songs.forEach(song => song["id"] = nanoid()); // creates an id for every song
+        }
+
         const newPlaylist = {
             name: playlistName,
             tags,
@@ -36,9 +40,7 @@ const playlistsModel = {
     },
 
     // PUT /playlists/:id/
-    updatePlaylist(playlistId, playlistName, playlistTags) {
-        const playlist = this.getPlaylistById(playlistId);
-
+    updatePlaylist(playlist, playlistName, playlistTags) {
         if (playlistName) {
             playlist.name = playlistName;
         }
@@ -76,8 +78,7 @@ const playlistsModel = {
         return newSong;
     },
 
-    saveSongInPlaylist(playlistId, song) {
-        const playlist = this.getPlaylistById(playlistId);
+    saveSongInPlaylist(playlist, song) {
         playlist.songs.push(song);
 
         return playlist;
