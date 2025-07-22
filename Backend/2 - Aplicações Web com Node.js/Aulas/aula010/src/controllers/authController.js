@@ -1,8 +1,4 @@
-let users = [
-    { username: "Juice WRLD", password: "999999" },
-    { username: "Vitor Roque", password: "101010" },
-    { username: "Blackpink", password: "kpopartist" }
-];
+const users = require('../models/users');
 
 const authController = {
     // GET /
@@ -19,7 +15,7 @@ const authController = {
             return res.status(400).redirect('/');
         }
 
-        const newUser = { username, password };
+        const newUser = { username, password, role: "standard" };
         users.push(newUser);
 
         req.session.authenticated = true; // session obj vai estar disponivel em outras requisições a partir desse momento
