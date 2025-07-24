@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const users = require("../models/users");
+const usersModel = require('../models/users');
 const jwt = require("jsonwebtoken");
 
 const authController = {
@@ -11,20 +11,21 @@ const authController = {
             return res.status(400).json({ message: "Invalid Credentials Format." });
         }
 
-        const emailExistsInDatabase = users.find(user => user.email === email);
-        if (emailExistsInDatabase) {
-            return res.status(400).json({ message: "There is already an account linked to this e-mail." });
+        const user = usersModel.getUserByEmail(email) || usersModel.getUserByUsername(username);
+
+        if (user) {
+            return res.status(400).json({ message: "There is already an account linked to these credentials." });
         }
 
-        const newUser = { email, password, username, role: "standard" };
-        users.push(newUser);
+        const newUser = usersModel.createUser(email, password, username);
+        usersModel.saveUser(newUser);
 
         return res.status(201).json(newUser);
     },
 
     login: (req, res) => {
         const { username, password } = req.body;
-        const user = users.find(u => u.username === username);
+        const user = usersModel.getUserByUsername(username);
 
         if (!user || user.password !== password) {
             return res.status(401).json({ message: "Invalid Credentials." });

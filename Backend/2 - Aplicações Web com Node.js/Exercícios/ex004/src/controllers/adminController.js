@@ -1,9 +1,27 @@
-let users = require("../models/users");
+const usersModel = require("../models/users");
 
 const adminController = {
     // GET /dashboard
     dashboard: (req, res) => {
+        const users = usersModel.getAllUsers();
         return res.status(200).json({ users });
+    },
+
+    // GET /dashboard/users/:username
+    show: (req, res) => {
+        const { username } = req.params;
+
+        if (!username || typeof (username) !== "string") {
+            return res.status(400).json({ message: "Invalid Username" });
+        }
+
+        const user = usersModel.getUserByUsername(username);
+
+        if (!user) {
+            return res.status(404).json({ message: "User Not Found" });
+        }
+
+        return res.status(200).json(user);
     },
 
     // POST /make-admin
@@ -14,14 +32,14 @@ const adminController = {
             return res.status(400).json({ message: "Invalid Username" });
         }
 
-        const user = users.find(u => u.username === username);
+        const user = usersModel.getUserByUsername(username);
 
         if (!user) {
             return res.status(404).json({ message: "User Not Found" });
         }
 
-        if (user.role !== "admin") {
-            user.role = "admin";
+        if (!usersModel.userIsAdmin(user)) {
+            usersModel.makeAdmin(user);
         } else {
             return res.status(409).json({ message: "User is already an Administrator" });
         }
@@ -37,13 +55,13 @@ const adminController = {
             return res.status(400).json({ message: "Invalid Username" });
         }
 
-        const userIndex = users.findIndex(user => user.username === username);
+        const hasDeleted = usersModel.deleteUser(username);
 
-        if (userIndex === -1) {
-            return res.status(404).json({ message: "User Not Found" });
+        if (!hasDeleted) {
+            return res.status(400).json({ message: "Could Not Delete User" });
         }
 
-        users.splice(userIndex, 1);
+        const users = usersModel.getAllUsers();
 
         return res.status(204).json(users);
     }
