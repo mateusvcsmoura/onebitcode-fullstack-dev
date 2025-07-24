@@ -8,7 +8,7 @@ module.exports = {
         const authHeader = req.headers.authorization;
 
         if (!authHeader) {
-            return res.status(401).json({ message: "Authorization Header Required" });
+            return res.status(401).json({ message: "Authorization Required" });
         }
 
         const token = authHeader.split(" ")[1];
