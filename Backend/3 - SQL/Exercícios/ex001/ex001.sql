@@ -1,0 +1,39 @@
+CREATE TYPE status AS ENUM('pending', 'doing', 'done');
+
+CREATE TABLE IF NOT EXISTS clients (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  phone VARCHAR(20) NOT NULL,
+  address VARCHAR(255),
+  registered_at DATE NOT NULL DEFAULT CURRENT_DATE
+);
+
+CREATE TABLE IF NOT EXISTS suppliers (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  phone VARCHAR(20) NOT NULL,
+  email VARCHAR(100) NOT NULL,
+  hiring_date DATE NOT NULL DEFAULT CURRENT_DATE,
+  observations TEXT
+);
+
+CREATE TABLE IF NOT EXISTS snacks (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  description VARCHAR(255) NOT NULL,
+  price NUMERIC(10, 2) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS orders (
+  id SERIAL PRIMARY KEY,
+  table_number VARCHAR(2) NOT NULL,
+  ordered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  order_status status NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS ingredients_in_stock (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  category VARCHAR(100),
+  quantity INT NOT NULL DEFAULT 0
+);

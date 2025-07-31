@@ -1,0 +1,37 @@
+Entidades e Atributos
+
+- Genêros Literários:
+    - ID (PK),
+    - Nome,
+    - Descrição
+
+- Livros:
+    - ID (PK),
+    - Título,
+    - Autor (ID, Tabela de Autores, FK),
+    - Gênero (Tabela Gêneros),
+    - Data de Publicação,
+    - ISBN,
+    - Descrição
+
+- Autores:
+    - ID (PK),
+    - Nome,
+    - Biografia,
+    - Data de Nascimento,
+    - ~Livros Publicados (Ref. Livros?)~ CONSULTA JOIN
+
+- Leitores:
+    - ID (PK),
+    - Nome,
+    - E-mail,
+    - Idade (opcional),
+    - Sexo (opcional)
+
+- Resenhas:
+    - ID (PK),
+    - Avaliação,
+    - Livro (ID do Livro, FK),
+    - Leitor do Livro (ID do Leitor, FK),
+    - Conteúdo
+
