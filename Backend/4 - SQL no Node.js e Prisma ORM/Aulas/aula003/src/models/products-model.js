@@ -37,7 +37,7 @@ class Product {
     static async update(id, attributes) {
         const { rows } = await query("SELECT * FROM products WHERE id=$1", [id]);
 
-        if (rows[0]) return null;
+        if (!rows[0]) return null;
 
         const product = new Product(rows[0]);
 
