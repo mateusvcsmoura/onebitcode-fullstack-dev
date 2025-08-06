@@ -1,3 +1,4 @@
+const { id } = require("zod/locales");
 const { query, getClient } = require("../database");
 const Customer = require("./customers-model");
 const Product = require("./products-model");
@@ -28,16 +29,26 @@ class Order {
         const result = await query(
             `SELECT 
                 orders.*, 
-                customers.id AS customers.id, 
-                customers.name AS customer.name, 
-                customers.email AS customer.email,
-                customers.created_at AS customer.created_at,
-                customers.updated_at AS customer.updated_at
+                customers.id AS customers_id, 
+                customers.name AS customer_name, 
+                customers.email AS customer_email,
+                customers.created_at AS customer_created_at,
+                customers.updated_at AS customer_updated_at
             FROM orders JOIN customers ON customers.id = orders.customer_id;
             `
         );
 
-        return result.rows.map(row => new Order(row));
+        return result.rows.map(row => {
+            const customer = new Customer({
+                id: row["customer_id"],
+                name: row["customer_name"],
+                email: row["customer_email"],
+                created_at: row["customer_created_at"],
+                updated_at: row["customer_updated_at"]
+            });
+
+            return new Order(row, customer);
+        });
     }
 
     /**
@@ -68,7 +79,7 @@ class Order {
             await dbClient.query("BEGIN");
 
             const orderCreationResult = await dbClient.query(
-                `INSERT INTO order (customer_id, total) VALUES ($1, $2) RETURNING *;`, [customerId, orderTotal]
+                `INSERT INTO orders (customer_id, total) VALUES ($1, $2) RETURNING *;`, [customerId, orderTotal]
             );
 
             const order = new Order(orderCreationResult.rows[0], null, populatedOrderProducts);
@@ -85,12 +96,67 @@ class Order {
             response = order;
         } catch (e) {
             await dbClient.query("ROLLBACK");
-            response = { message: `Error while creating order: ${e.message} ` };
+            response = { message: `Error while creating order: ${e.message}` };
         } finally {
             dbClient.release();
         }
 
         return response;
+    }
+
+    static async findById(id) {
+        const orderResult = await query(
+            `SELECT 
+                orders.*, 
+                customers.id AS customers_id, 
+                customers.name AS customer_name, 
+                customers.email AS customer_email,
+                customers.created_at AS customer_created_at,
+                customers.updated_at AS customer_updated_at
+            FROM orders 
+            JOIN customers ON customers.id = orders.customer_id 
+            WHERE orders.id=$1;`, [id]
+        );
+
+        const orderProductResult = await query(
+            `SELECT order_products.*, products.*
+            FROM order_products JOIN products ON order_products.product_id = products.id
+            WHERE order_products.order_id = $1`, [id]
+        );
+
+        const orderData = orderResult.rows[0];
+        const customerData = new Customer({
+            id: orderData["customer_id"],
+            name: orderData["customer_name"],
+            email: orderData["customer_email"],
+            created_at: orderData["customer_created_at"],
+            updated_at: orderData["customer_updated_at"]
+        });
+
+        return new Order(orderData, customerData, orderProductResult.rows);
+    }
+
+    static async delete(id) {
+        const dbClient = await getClient();
+        let result;
+
+        try {
+            await dbClient.query("BEGIN");
+
+            await query(`DELETE FROM order_products WHERE order_id=$1;`, [id]);
+            await query(`DELETE FROM orders WHERE id=$1;`, [id]);
+
+            await dbClient.query("COMMIT");
+
+            result = { message: "Order deleted successfully" };
+        } catch (e) {
+            await dbClient.query("ROLLBACK");
+            result = { message: "Error while deleting order" };
+        } finally {
+            dbClient.release();
+        }
+
+        return result;
     }
 
 };

@@ -1,6 +1,8 @@
 const { Router } = require("express");
+
 const productsController = require("./controllers/products-controller");
 const customerController = require("./controllers/customers-controller");
+const ordersController = require("./controllers/orders-controller");
 
 const router = Router();
 
@@ -15,5 +17,10 @@ router.get('/customers/:id', customerController.show);
 router.post('/customers', customerController.create);
 router.put('/customers/:id', customerController.update);
 router.delete('/customers/:id', customerController.delete);
+
+router.get('/orders', ordersController.index);
+router.get('/orders/:id', ordersController.show);
+router.post('/orders', ordersController.create);
+router.delete('/orders/:id', ordersController.delete);
 
 module.exports = router;
