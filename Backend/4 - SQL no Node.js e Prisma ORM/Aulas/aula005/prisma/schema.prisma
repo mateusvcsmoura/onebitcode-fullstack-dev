@@ -21,4 +21,16 @@ model Post {
   published Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  authorId Int?
+  author   User? @relation(fields: [authorId], references: [id])
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(255)
+  email     String   @unique @db.VarChar(255)
+  createdAt DateTime @default(now())
+
+  posts Post[]
 }
