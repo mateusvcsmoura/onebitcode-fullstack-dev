@@ -16,7 +16,8 @@ datasource db {
 model Post {
   id        Int      @id @default(autoincrement())
   title     String   @db.VarChar(255)
-  content   String?
+  content   String   @db.VarChar(255)
+  slug      String   @unique @db.VarChar(255)
   published Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
