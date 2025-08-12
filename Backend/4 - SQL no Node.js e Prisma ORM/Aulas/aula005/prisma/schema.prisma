@@ -24,6 +24,8 @@ model Post {
 
   authorId Int?
   author   User? @relation(fields: [authorId], references: [id])
+
+  tags Tag[] @relation("PostTags")
 }
 
 model User {
@@ -33,4 +35,11 @@ model User {
   createdAt DateTime @default(now())
 
   posts Post[]
+}
+
+model Tag {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(255)
+
+  posts Post[] @relation("PostTags")
 }

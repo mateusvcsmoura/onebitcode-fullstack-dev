@@ -72,7 +72,7 @@ postsRouter.get('/search', async (req, res) => {
 });
 
 postsRouter.get('/:id', async (req, res) => {
-    const post = await prisma.post.findUnique({ where: { id: +req.params.id } });
+    const post = await prisma.post.findUnique({ where: { id: +req.params.id }, include: { author: true, tags: true } });
 
     if (!post) return res.status(404).json({ message: "Post not found" });
 
@@ -94,7 +94,12 @@ postsRouter.post('/create', async (req, res) => {
     const slug = `${baseSlug}-${Date.now()}`;
 
     const newPost = await prisma.post.create({
-        data: { title, content, slug, authorId }
+        data: {
+            title, content, slug, authorId,
+            tags: {
+                connect: req.body.tags
+            }
+        }
     });
 
     return res.status(201).json(newPost);
@@ -104,7 +109,12 @@ postsRouter.put('/:id', async (req, res) => {
     const { title, content } = req.body;
 
     const updatedPost = await prisma.post.update({
-        data: { title, content },
+        data: {
+            title, content,
+            tags: {
+                set: req.body.tags
+            }
+        },
         where: { id: +req.params.id }
     });
 
