@@ -4,6 +4,12 @@ const prisma = require("../database");
 const postsRouter = Router();
 
 postsRouter.get('/', async (req, res) => {
+    const page = Number(req.query.page) || 1;
+    const pageSize = Number(req.query.pageSize) || 10;
+
+    const skip = (page - 1) * pageSize;
+    const take = pageSize;
+
     const posts = await prisma.post.findMany({
         select: {
             id: true,
@@ -12,10 +18,16 @@ postsRouter.get('/', async (req, res) => {
             slug: true,
             published: true,
             authorId: true
-        }
+        },
+        orderBy: { createdAt: "desc" },
+        take: take,
+        skip: skip
     });
 
-    return res.status(200).json(posts);
+    const totalPosts = await prisma.post.count();
+    const totalPages = Math.ceil(totalPosts / pageSize);
+
+    return res.status(200).json({ posts, pagination: { page, pageSize, totalPosts, totalPages } });
 });
 
 postsRouter.get('/search', async (req, res) => {
