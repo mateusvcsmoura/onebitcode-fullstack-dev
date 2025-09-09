@@ -1,16 +1,7 @@
 import { NextFunction, Request, Response, Router } from "express";
-import { LeadsController } from "./controllers/leads-controller";
-import { GroupsController } from "./controllers/groups-controller";
-import { CampaignsController } from "./controllers/campaigns-controller";
-import { CampaignLeadsController } from "./controllers/campaign-leads-controller";
-import { GroupLeadsController } from "./controllers/group-leads-controller";
+import { campaignLeadsController, campaignsController, groupLeadsController, groupsController, leadsController } from "./container";
 
 const router = Router();
-const leadsController = new LeadsController();
-const groupsController = new GroupsController();
-const campaignsController = new CampaignsController();
-const campaignLeadsController = new CampaignLeadsController();
-const groupLeadsController = new GroupLeadsController();
 
 router.get('/status', async (req: Request, res: Response, next: NextFunction) => {
     try {
