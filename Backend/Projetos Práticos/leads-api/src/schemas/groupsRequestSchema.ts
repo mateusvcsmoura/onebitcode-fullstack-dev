@@ -10,3 +10,7 @@ export const updateGroupRequestSchema = z.object({
     description: z.string({ error: "Group description must be a string" }).optional()
 });
 
+export const addLeadRequestSchema = z.object({
+    leadId: z.number({ error: "Lead ID must be a number" })
+});
+

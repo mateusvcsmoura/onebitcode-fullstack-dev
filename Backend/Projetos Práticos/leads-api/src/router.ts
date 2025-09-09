@@ -3,12 +3,14 @@ import { LeadsController } from "./controllers/leads-controller";
 import { GroupsController } from "./controllers/groups-controller";
 import { CampaignsController } from "./controllers/campaigns-controller";
 import { CampaignLeadsController } from "./controllers/campaign-leads-controller";
+import { GroupLeadsController } from "./controllers/group-leads-controller";
 
 const router = Router();
 const leadsController = new LeadsController();
 const groupsController = new GroupsController();
 const campaignsController = new CampaignsController();
 const campaignLeadsController = new CampaignLeadsController();
+const groupLeadsController = new GroupLeadsController();
 
 router.get('/status', async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -29,6 +31,10 @@ router.post('/groups', groupsController.create);
 router.get('/groups/:id', groupsController.show);
 router.put('/groups/:id', groupsController.update);
 router.delete('/groups/:id', groupsController.delete);
+
+router.get('/groups/:groupId/leads', groupLeadsController.getAllLeads);
+router.post('/groups/:groupId/leads', groupLeadsController.addLead);
+router.delete('/groups/:groupId/leads/:leadId', groupLeadsController.removeLead);
 
 router.get('/campaigns', campaignsController.index);
 router.post('/campaigns', campaignsController.create);
