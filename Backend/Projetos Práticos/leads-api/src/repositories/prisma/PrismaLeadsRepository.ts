@@ -11,11 +11,20 @@ export class PrismaLeadsRepository implements LeadsRepository {
                     equals: params.where?.name?.equals,
                     mode: params.where?.name?.mode
                 },
-                status: params.where?.status
+                status: params.where?.status,
+                groups: {
+                    some: {
+                        id: params.where?.groupId
+                    }
+                }
             },
             orderBy: { [params.sortBy ?? "name"]: params.order },
             skip: params.offset,
-            take: params.limit
+            take: params.limit,
+            include: {
+                groups: params.include?.groups,
+                campaigns: params.include?.campaigns
+            }
         });
     };
 
@@ -40,7 +49,12 @@ export class PrismaLeadsRepository implements LeadsRepository {
                     equals: where?.name?.equals,
                     mode: where?.name?.mode
                 },
-                status: where?.status
+                status: where?.status,
+                groups: {
+                    some: {
+                        id: where?.groupId
+                    }
+                }
             }
         });
     };

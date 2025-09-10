@@ -1,46 +1,53 @@
 import { Handler } from "express";
-import { prisma } from "../database";
 import { HttpError } from "../errors/HttpError";
 import { addLeadRequestSchema } from "../schemas/groupsRequestSchema";
-import { Prisma } from "@prisma/client";
 import { getLeadsRequestSchema } from "../schemas/leadsRequestSchema";
+import { GroupsRepository } from "../repositories/groups-repository";
+import { LeadsRepository, LeadWhereParams } from "../repositories/leads-repository";
 
 export class GroupLeadsController {
+    constructor(private readonly groupsRepository: GroupsRepository, private readonly leadsRepository: LeadsRepository) { }
+
     getAllLeads: Handler = async (req, res, next) => {
         try {
             const groupId = Number(req.params.groupId);
             const query = getLeadsRequestSchema.parse(req.query);
 
             const { page = "1", pageSize = "10", name, status, sortBy = "name", order = "asc" } = query;
-            const pageNumber = Number(page);
-            const pageSizeNumber = Number(pageSize);
+            const limit = Number(pageSize);
+            const offset = (Number(page) - 1) * limit;
 
-            const where: Prisma.LeadWhereInput = {
-                groups: {
-                    some: { id: groupId }
-                }
-            };
+            const where: LeadWhereParams = { groupId };
 
-            if (name) where.name = { contains: name, mode: "insensitive" };
+            if (name) where.name = { like: name, mode: "insensitive" };
             if (status) where.status = status;
 
-            const leads = await prisma.lead.findMany({
+            const leads = await this.leadsRepository.find({
                 where,
-                orderBy: { [sortBy]: order },
-                skip: (pageNumber - 1) * pageSizeNumber,
-                take: pageSizeNumber,
+                sortBy,
+                order,
+                limit,
+                offset,
                 include: { groups: true }
             });
 
-            const total = await prisma.lead.count({ where });
+            // const leads = await prisma.lead.findMany({
+            //     where,
+            //     orderBy: { [sortBy]: order },
+            //     skip: (pageNumber - 1) * pageSizeNumber,
+            //     take: pageSizeNumber,
+            //     include: { groups: true }
+            // });
+
+            const total = await this.leadsRepository.count(where);
 
             return res.status(200).json({
                 leads,
                 meta: {
-                    page: pageNumber,
-                    pageSize: pageSizeNumber,
+                    page: Number(page),
+                    pageSize: limit,
                     total,
-                    totalPages: Math.ceil(total / pageSizeNumber)
+                    totalPages: Math.ceil(total / limit)
                 }
             });
         } catch (e) {
@@ -53,19 +60,13 @@ export class GroupLeadsController {
             const groupId = Number(req.params.groupId);
             const lead = addLeadRequestSchema.parse(req.body);
 
-            const groupExists = await prisma.group.findUnique({ where: { id: groupId } });
+            const groupExists = await this.groupsRepository.findById(groupId);
             if (!groupExists) throw new HttpError(404, "Group not found");
 
-            const leadExists = await prisma.lead.findUnique({ where: { id: lead.leadId } });
+            const leadExists = await this.leadsRepository.findById(lead.leadId);
             if (!leadExists) throw new HttpError(404, "Lead not found");
 
-            const updatedGroup = await prisma.group.update({
-                where: { id: groupId },
-                data: {
-                    leads: { connect: { id: lead.leadId } }
-                },
-                include: { leads: true }
-            });
+            const updatedGroup = await this.groupsRepository.addLead(groupId, lead.leadId);
 
             return res.status(201).json(updatedGroup);
         } catch (e) {
@@ -78,21 +79,13 @@ export class GroupLeadsController {
             const groupId = Number(req.params.groupId);
             const leadId = Number(req.params.leadId);
 
-            const groupExists = await prisma.group.findUnique({ where: { id: groupId } });
+            const groupExists = await this.groupsRepository.findById(groupId);
             if (!groupExists) throw new HttpError(404, "Group not found");
 
-            const leadExists = await prisma.lead.findUnique({ where: { id: leadId } });
+            const leadExists = await this.leadsRepository.findById(leadId);
             if (!leadExists) throw new HttpError(404, "Lead not found");
 
-            const updatedGroup = await prisma.group.update({
-                where: { id: groupId },
-                data: {
-                    leads: {
-                        disconnect: { id: leadId }
-                    }
-                },
-                include: { leads: true }
-            });
+            const updatedGroup = await this.groupsRepository.removeLead(groupId, leadId);
 
             return res.status(200).json(updatedGroup);
         } catch (e) {

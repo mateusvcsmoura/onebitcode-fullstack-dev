@@ -10,6 +10,8 @@ export interface LeadWhereParams {
     }
 
     status?: LeadStatus;
+
+    groupId?: number;
 };
 
 export interface FindLeadParams {
@@ -18,6 +20,10 @@ export interface FindLeadParams {
     order?: "asc" | "desc";
     limit?: number;
     offset?: number;
+    include?: {
+        groups?: boolean
+        campaigns?: boolean
+    }
 };
 
 export interface CreateLeadAttributes {
