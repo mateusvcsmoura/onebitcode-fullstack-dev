@@ -1,44 +1,45 @@
 import { Handler } from "express";
-import { Prisma } from "@prisma/client";
 import { addLeadRequestSchema, getCampaignLeadsRequestSchema, updateLeadStatusRequestSchema } from "../schemas/campaignsRequestSchema";
-import { prisma } from "../database";
+import { LeadsRepository, LeadWhereParams } from "../repositories/leads-repository";
+import { CampaignsRepository } from "../repositories/campaigns-repository";
 
 export class CampaignLeadsController {
+    constructor(
+        private readonly leadsRepository: LeadsRepository,
+        private readonly campaignsRepository: CampaignsRepository
+    ) { }
+
     getLeads: Handler = async (req, res, next) => {
         try {
             const campaignId = Number(req.params.campaignId);
             const query = getCampaignLeadsRequestSchema.parse(req.query);
 
             const { page = "1", pageSize = "10", name, status, sortBy = "name", order = "asc" } = query;
-            const pageNumber = Number(page);
-            const pageSizeNumber = Number(pageSize);
+            const limit = Number(pageSize);
+            const offset = (Number(page) - 1) * limit;
 
-            const where: Prisma.LeadWhereInput = {
-                campaigns: {
-                    some: { campaignId } // alguma dessas campanhas tem que ser igual ao campaignId
-                }
-            };
+            const where: LeadWhereParams = { campaignId, campaignStatus: status };
 
-            if (name) where.name = { contains: name, mode: "insensitive" };
-            if (status) where.campaigns = { some: { status } };
+            if (name) where.name = { like: name, mode: "insensitive" };
 
-            const leads = await prisma.lead.findMany({
+            const leads = await this.leadsRepository.find({
                 where,
-                orderBy: { [sortBy]: order },
-                skip: (pageNumber - 1) * pageSizeNumber,
-                take: pageSizeNumber,
-                include: { campaigns: { select: { campaignId: true, leadId: true, status: true } } }
+                sortBy,
+                order,
+                limit,
+                offset,
+                include: { campaigns: true }
             });
 
-            const total = await prisma.lead.count({ where });
+            const total = await this.leadsRepository.count(where);
 
             return res.status(200).json({
                 leads,
                 meta: {
-                    page: pageNumber,
-                    pageSize: pageSizeNumber,
+                    page: Number(page),
+                    pageSize: limit,
                     total,
-                    totalPages: Math.ceil(total / pageSizeNumber)
+                    totalPages: Math.ceil(total / limit)
                 }
             });
 
@@ -49,13 +50,12 @@ export class CampaignLeadsController {
 
     addLead: Handler = async (req, res, next) => {
         try {
-            const body = addLeadRequestSchema.parse(req.body);
-            await prisma.leadCampaign.create({ // tabela intermediaria lead - campaign
-                data: {
-                    campaignId: Number(req.params.campaignId),
-                    leadId: body.leadId,
-                    status: body.status
-                }
+            const { leadId, status = "New" } = addLeadRequestSchema.parse(req.body);
+
+            await this.campaignsRepository.addLead({
+                campaignId: Number(req.params.campaignId),
+                leadId: leadId,
+                status: status
             });
 
             return res.status(201).end();
@@ -66,18 +66,13 @@ export class CampaignLeadsController {
 
     updateLeadStatus: Handler = async (req, res, next) => {
         try {
-            const body = updateLeadStatusRequestSchema.parse(req.body);
-            const updatedLeadCampaign = await prisma.leadCampaign.update({
-                data: body,
-                where: {
-                    leadId_campaignId: { // pk composta
-                        campaignId: Number(req.params.campaignId),
-                        leadId: Number(req.params.leadId)
-                    }
-                }
-            });
+            const { status } = updateLeadStatusRequestSchema.parse(req.body);
+            const campaignId = Number(req.params.campaignId);
+            const leadId = Number(req.params.leadId);
 
-            return res.status(200).json(updatedLeadCampaign);
+            await this.campaignsRepository.updateLeadStatus({ campaignId, leadId, status });
+
+            return res.status(204).json({ message: "Lead Status was successfully updated" });
         } catch (e) {
             next(e);
         }
@@ -85,16 +80,12 @@ export class CampaignLeadsController {
 
     removeLead: Handler = async (req, res, next) => {
         try {
-            const removedLead = await prisma.leadCampaign.delete({
-                where: {
-                    leadId_campaignId: {
-                        campaignId: Number(req.params.campaignId),
-                        leadId: Number(req.params.leadId)
-                    }
-                }
-            });
+            const campaignId = Number(req.params.campaignId);
+            const leadId = Number(req.params.leadId);
 
-            return res.status(200).json({ removedLead });
+            await this.campaignsRepository.removeLead(campaignId, leadId);
+
+            return res.status(200).json({ message: "Lead was successfully removed from Campaign" });
         } catch (e) {
             next(e);
         }

@@ -44,11 +44,10 @@ export class CampaignsController {
         if (!req.body) throw new HttpError(400, "No req body");
 
         try {
-            const campaign = await this.campaignsRepository.findById(Number(req.params.id));
-            if (!campaign) throw new HttpError(404, "Campaign not found");
-
             const body = updateCampaignRequestSchema.parse(req.body);
+
             const updatedCampaign = await this.campaignsRepository.updateById(Number(req.params.id), body);
+            if (!updatedCampaign) throw new HttpError(404, "Campaign not found");
 
             return res.status(200).json(updatedCampaign);
         } catch (e) {
@@ -58,10 +57,8 @@ export class CampaignsController {
 
     delete: Handler = async (req, res, next) => {
         try {
-            const campaign = await this.campaignsRepository.findById(Number(req.params.id));
-            if (!campaign) throw new HttpError(404, "Campaign not found");
-
             const deletedCampaign = await this.campaignsRepository.deleteById(Number(req.params.id));
+            if (!deletedCampaign) throw new HttpError(404, "Campaign not found");
 
             return res.status(204).json(deletedCampaign);
         } catch (e) {
